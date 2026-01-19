@@ -33,3 +33,8 @@ Thumbs.db
 
 # uv
 .uv/
+
+# Database
+tweets.json
+*.db
+*.sqlite
