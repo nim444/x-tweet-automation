@@ -27,8 +27,10 @@ The `DEVICE_ID` is also duplicated in `main.py` as a global constant - keep both
 
 ## Architecture
 
-- **main.py**: Entry point for the automation script
-- **uiautomator2**: Primary dependency for Android UI automation, enables programmatic control of Android UI elements
+- **main.py**: Entry point that orchestrates the automation flow
+- **device.py**: Device connection and management (connect to ADB device, stop apps)
+- **x_automation.py**: X app automation logic (open app, open composer, etc.)
+- **uiautomator2**: Primary dependency for Android UI automation via XPath selectors
 - **ADB connectivity**: Requires Android device connected via ADB (USB or wireless)
 
 ## Android Device Requirements
