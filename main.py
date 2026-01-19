@@ -1,4 +1,5 @@
 """Main entry point for X tweet automation."""
+
 import os
 from dotenv import load_dotenv
 
@@ -9,7 +10,7 @@ from x_automation import XAutomation
 def main():
     # Load environment variables
     load_dotenv()
-    device_id = os.getenv('DEVICE_ID', '')
+    device_id = os.getenv("DEVICE_ID", "")
 
     if not device_id:
         print("Error: DEVICE_ID not set in .env file")

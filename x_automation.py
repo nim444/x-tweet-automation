@@ -1,4 +1,5 @@
 """X (Twitter) app automation."""
+
 from time import sleep
 
 
@@ -23,9 +24,13 @@ class XAutomation:
         """Open the tweet composer by clicking the compose button."""
         try:
             # Click composer button twice (sometimes needed for UI response)
-            self.device.xpath('//*[@resource-id="com.twitter.android:id/composer_write"]').click()
+            self.device.xpath(
+                '//*[@resource-id="com.twitter.android:id/composer_write"]'
+            ).click()
             sleep(1)
-            self.device.xpath('//*[@resource-id="com.twitter.android:id/composer_write"]').click()
+            self.device.xpath(
+                '//*[@resource-id="com.twitter.android:id/composer_write"]'
+            ).click()
             sleep(2)
             print("Opened composer")
             return True
