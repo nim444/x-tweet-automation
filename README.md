@@ -52,23 +52,47 @@
 
 ## Quick Start
 
-### 1. Add Tweets to Queue
+### 1. Setup Shell Aliases (Optional but Recommended)
+
+Run the setup script:
 
 ```bash
+./setup_aliases.sh
+```
+
+Copy the output and add to your `~/.zshrc`, then reload:
+
+```bash
+source ~/.zshrc
+```
+
+Now you can use:
+```bash
+xt   # Manage tweets (add, edit, delete)
+xw   # Post next tweet manually
+```
+
+### 2. Add Tweets to Queue
+
+```bash
+xt
+# OR without alias:
 uv run manage_tweets.py
 ```
 
 Follow the interactive prompts to add tweets with hashtags.
 
-### 2. Post Manually
+### 3. Post Manually
 
 Post the next tweet in queue:
 
 ```bash
+xw
+# OR without alias:
 uv run main.py
 ```
 
-### 3. Schedule Automatic Posting
+### 4. Schedule Automatic Posting
 
 Edit posting times in `lib/schedule_config.py`:
 
@@ -95,7 +119,7 @@ The scheduler runs every minute but only posts at configured times.
 ### Managing Tweets
 
 ```bash
-uv run manage_tweets.py
+xt
 ```
 
 **Options:**
@@ -110,10 +134,11 @@ uv run manage_tweets.py
 ### Manual Posting
 
 ```bash
-uv run main.py
+xw
 ```
 
 Posts the next pending tweet from the queue immediately.
+
 
 ### Scheduler
 

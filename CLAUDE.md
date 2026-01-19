@@ -12,14 +12,17 @@ X (Twitter) automation tool that posts tweets from a queue on a scheduled basis.
 # Install dependencies
 uv sync
 
-# Manage tweet queue (add, edit, delete tweets)
-uv run manage_tweets.py
+# Setup shell aliases (optional)
+./setup_aliases.sh  # Shows aliases to add to ~/.zshrc
 
-# Post next pending tweet manually
-uv run main.py
+# With aliases (after adding to ~/.zshrc)
+xt   # Manage tweets
+xw   # Post next tweet
 
-# Run scheduler (for cron) - posts at scheduled times
-uv run post_scheduler.py
+# Without aliases
+uv run manage_tweets.py  # Manage tweets
+uv run main.py           # Post next tweet
+uv run post_scheduler.py # Scheduler for cron
 ```
 
 ## Configuration
