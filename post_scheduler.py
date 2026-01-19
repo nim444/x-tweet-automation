@@ -3,10 +3,10 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 
-from tweet_db import TweetDB
-from device import Device
-from x_automation import XAutomation
-from schedule_config import POSTING_SCHEDULE
+from lib.tweet_db import TweetDB
+from lib.device import Device
+from lib.x_automation import XAutomation
+from lib.schedule_config import POSTING_SCHEDULE
 
 
 def should_post_now() -> bool:
@@ -27,9 +27,8 @@ def post_tweet(device, tweet_text: str) -> bool:
         if not x_auto.open_composer():
             return False
 
-        # TODO: Type the tweet text and post
-        # This needs to be implemented in x_automation.py
-        print(f"Would post: {tweet_text}")
+        if not x_auto.write_and_post_tweet(tweet_text):
+            return False
 
         return True
     except Exception as e:

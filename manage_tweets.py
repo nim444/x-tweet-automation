@@ -1,6 +1,6 @@
 """CLI tool to manage tweets."""
-from tweet_db import TweetDB
-from schedule_config import POSTING_SCHEDULE
+from lib.tweet_db import TweetDB
+from lib.schedule_config import POSTING_SCHEDULE
 
 
 def add_tweet(db: TweetDB):

@@ -37,3 +37,26 @@ class XAutomation:
         except Exception as e:
             print(f"Failed to open composer: {e}")
             return False
+
+    def write_and_post_tweet(self, text: str):
+        """Write tweet text and post it."""
+        try:
+            # Click text input area
+            self.device.click(180, 500)
+            sleep(1)
+
+            # Set tweet text
+            self.device.set_fastinput_ime(True)
+            self.device.send_keys(text)
+            self.device.set_fastinput_ime(False)
+            print(f"Wrote tweet: {text}")
+            sleep(1)
+
+            # Click post button
+            self.device.click(928, 192)
+            print("Clicked post button")
+            sleep(5)
+            return True
+        except Exception as e:
+            print(f"Failed to write/post tweet: {e}")
+            return False
