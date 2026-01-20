@@ -5,6 +5,10 @@
 ![Platform](https://img.shields.io/badge/platform-Android-brightgreen.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 
+
+![x-tweet](tx.gif)
+
+
 > Automated tweet posting from a queue on a scheduled basis using Android device automation via ADB.
 
 ## Features
