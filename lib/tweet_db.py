@@ -1,4 +1,5 @@
 """Tweet database using TinyDB."""
+
 from tinydb import TinyDB, Query
 from datetime import datetime
 from typing import List, Optional
@@ -9,7 +10,7 @@ class TweetDB:
 
     def __init__(self, db_file: str = "tweets.json"):
         self.db = TinyDB(db_file, indent=2)
-        self.tweets = self.db.table('tweets')
+        self.tweets = self.db.table("tweets")
 
     def validate_length(self, text: str) -> tuple[bool, int]:
         """
@@ -26,12 +27,14 @@ class TweetDB:
         if not is_valid:
             raise ValueError(f"Tweet too long ({length}/280 characters)")
 
-        tweet_id = self.tweets.insert({
-            'text': text,
-            'status': 'pending',
-            'posted_at': None,
-            'created_at': datetime.now().isoformat()
-        })
+        tweet_id = self.tweets.insert(
+            {
+                "text": text,
+                "status": "pending",
+                "posted_at": None,
+                "created_at": datetime.now().isoformat(),
+            }
+        )
 
         return tweet_id
 
@@ -57,7 +60,7 @@ class TweetDB:
         if not is_valid:
             raise ValueError(f"Tweet too long ({length}/280 characters)")
 
-        self.tweets.update({'text': text}, doc_ids=[tweet_id])
+        self.tweets.update({"text": text}, doc_ids=[tweet_id])
         return True
 
     def delete_tweet(self, tweet_id: int) -> bool:
@@ -66,21 +69,21 @@ class TweetDB:
 
     def mark_as_posted(self, tweet_id: int) -> bool:
         """Mark a tweet as posted."""
-        self.tweets.update({
-            'status': 'posted',
-            'posted_at': datetime.now().isoformat()
-        }, doc_ids=[tweet_id])
+        self.tweets.update(
+            {"status": "posted", "posted_at": datetime.now().isoformat()},
+            doc_ids=[tweet_id],
+        )
         return True
 
     def get_next_pending(self) -> Optional[dict]:
         """Get the next pending tweet to post."""
         Tweet = Query()
-        pending = self.tweets.search(Tweet.status == 'pending')
+        pending = self.tweets.search(Tweet.status == "pending")
         return pending[0] if pending else None
 
     def get_full_text(self, tweet: dict) -> str:
         """Get full text for a tweet."""
-        return tweet['text']
+        return tweet["text"]
 
     def close(self):
         """Close database connection."""

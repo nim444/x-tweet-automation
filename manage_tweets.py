@@ -1,4 +1,5 @@
 """CLI tool to manage tweets."""
+
 from lib.tweet_db import TweetDB
 from lib.schedule_config import POSTING_SCHEDULE
 
@@ -32,7 +33,9 @@ def list_tweets(db: TweetDB, filter_status=None):
 
     for tweet in tweets:
         full_text = db.get_full_text(tweet)
-        print(f"ID: {tweet.doc_id} | Status: {tweet['status']} | {len(full_text)}/280 chars")
+        print(
+            f"ID: {tweet.doc_id} | Status: {tweet['status']} | {len(full_text)}/280 chars"
+        )
         print(f"   {full_text}")
         print()
 
@@ -86,7 +89,7 @@ def delete_tweet(db: TweetDB):
     print(f"\nDelete: {db.get_full_text(tweet)}")
     confirm = input("Type 'yes' to confirm: ").strip().lower()
 
-    if confirm == 'yes':
+    if confirm == "yes":
         db.delete_tweet(tweet_id)
         print("Deleted")
     else:
@@ -108,9 +111,9 @@ def main():
 
     try:
         while True:
-            print("\n" + "="*40)
+            print("\n" + "=" * 40)
             print("Tweet Manager")
-            print("="*40)
+            print("=" * 40)
             print("1. Add tweet to queue")
             print("2. List all tweets")
             print("3. List pending queue")
@@ -121,19 +124,19 @@ def main():
 
             choice = input("\nChoice: ").strip()
 
-            if choice == '1':
+            if choice == "1":
                 add_tweet(db)
-            elif choice == '2':
+            elif choice == "2":
                 list_tweets(db)
-            elif choice == '3':
-                list_tweets(db, 'pending')
-            elif choice == '4':
+            elif choice == "3":
+                list_tweets(db, "pending")
+            elif choice == "4":
                 edit_tweet(db)
-            elif choice == '5':
+            elif choice == "5":
                 delete_tweet(db)
-            elif choice == '6':
+            elif choice == "6":
                 show_schedule()
-            elif choice == '7':
+            elif choice == "7":
                 break
             else:
                 print("Invalid option")

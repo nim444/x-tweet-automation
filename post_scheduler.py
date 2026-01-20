@@ -1,4 +1,5 @@
 """Scheduler to post tweets at configured times."""
+
 import os
 from datetime import datetime
 from dotenv import load_dotenv
@@ -39,7 +40,7 @@ def post_tweet(device, tweet_text: str) -> bool:
 def main():
     """Main scheduler entry point."""
     load_dotenv()
-    device_id = os.getenv('DEVICE_ID', '')
+    device_id = os.getenv("DEVICE_ID", "")
 
     if not device_id:
         print("Error: DEVICE_ID not set")
