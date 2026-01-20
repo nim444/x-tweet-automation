@@ -11,9 +11,8 @@
 
 - **Queue-based posting** - Add multiple tweets, post them automatically
 - **Flexible scheduling** - Configure daily posting times
-- **Manual control** - Post tweets manually or via cron scheduler
+- **Manual control** - Post tweets manually or via scheduler
 - **Character validation** - Automatic 280-character limit checking
-- **Hashtag support** - Auto-formatted hashtags
 - **Simple CLI** - Easy-to-use command-line interface
 - **NoSQL database** - TinyDB for lightweight tweet storage
 
@@ -80,7 +79,7 @@ xt
 uv run manage_tweets.py
 ```
 
-Follow the interactive prompts to add tweets with hashtags.
+Enter your tweet text (max 280 characters).
 
 ### 3. Post Manually
 
@@ -92,7 +91,7 @@ xw
 uv run main.py
 ```
 
-### 4. Schedule Automatic Posting
+### 4. Schedule Automatic Posting (macOS)
 
 Edit posting times in `lib/schedule_config.py`:
 
@@ -104,15 +103,32 @@ POSTING_SCHEDULE = [
 ]
 ```
 
-Add to crontab:
+Setup the scheduler using launchd (macOS native):
 
 ```bash
-crontab -e
-# Add this line:
-* * * * * cd /path/to/x-tweet-automation && uv run post_scheduler.py
+./setup_scheduler.sh
 ```
 
-The scheduler runs every minute but only posts at configured times.
+This will:
+- Install the scheduler to run every 60 seconds
+- Only post tweets at configured times
+- Start automatically on login
+- Log to `logs/scheduler.log`
+
+**Manage the scheduler:**
+```bash
+# Check if running
+launchctl list | grep xtweet
+
+# View logs
+tail -f logs/scheduler.log
+
+# Stop scheduler
+launchctl unload ~/Library/LaunchAgents/com.xtweet.scheduler.plist
+
+# Start scheduler
+launchctl load ~/Library/LaunchAgents/com.xtweet.scheduler.plist
+```
 
 ## Usage
 
@@ -152,17 +168,21 @@ Checks current time against schedule and posts if there's a match.
 
 ```
 .
-├── main.py                  # Manual posting script
-├── manage_tweets.py         # Tweet management CLI
-├── post_scheduler.py        # Automated scheduler
-├── lib/                     # Core library
-│   ├── device.py           # ADB device connection
-│   ├── x_automation.py     # X app automation
-│   ├── tweet_db.py         # Database operations
-│   └── schedule_config.py  # Posting schedule
-├── tweets.json             # Tweet queue (auto-created)
-├── .env                    # Device configuration
-└── README.md              # This file
+├── main.py                      # Manual posting script
+├── manage_tweets.py             # Tweet management CLI
+├── post_scheduler.py            # Automated scheduler
+├── setup_aliases.sh             # Shell alias setup
+├── setup_scheduler.sh           # macOS scheduler setup
+├── com.xtweet.scheduler.plist   # launchd configuration
+├── lib/                         # Core library
+│   ├── device.py               # ADB device connection
+│   ├── x_automation.py         # X app automation
+│   ├── tweet_db.py             # Database operations
+│   └── schedule_config.py      # Posting schedule
+├── tweets.json                 # Tweet queue (auto-created)
+├── logs/                       # Scheduler logs (auto-created)
+├── .env                        # Device configuration
+└── README.md                   # This file
 ```
 
 ## Configuration
@@ -179,7 +199,7 @@ DEVICE_ID=your_device_id_here
 POSTING_SCHEDULE = ["09:00", "14:00", "19:00"]
 ```
 
-Times are in 24-hour format (HH:MM).
+Times in 24-hour format (HH:MM). The scheduler runs every 60 seconds but only posts at these times.
 
 ## How It Works
 
@@ -201,11 +221,10 @@ Times are in 24-hour format (HH:MM).
 ### Adding a Tweet
 
 ```
-Tweet text: Standing with the people of Iran
-Hashtags (comma-separated, no #): FreeIran,Iran2026
+Tweet text: Standing with the people of Iran #FreeIran
 ```
 
-Result: `Standing with the people of Iran #FreeIran #Iran2026`
+Result: Tweet added to queue with 42/280 characters
 
 ### Viewing Queue
 
@@ -215,7 +234,7 @@ Result: `Standing with the people of Iran #FreeIran #Iran2026`
 ID: 1 | Status: pending | 42/280 chars
    Standing with the people of Iran #FreeIran
 
-ID: 2 | Status: pending | 55/280 chars
+ID: 2 | Status: pending | 66/280 chars
    The resilience of the Iranian people is inspiring #Iran
 ```
 

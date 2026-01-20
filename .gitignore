@@ -38,3 +38,8 @@ Thumbs.db
 tweets.json
 *.db
 *.sqlite
+
+# Logs
+logs/
+*.log
+com.xtweet.scheduler.plist

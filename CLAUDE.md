@@ -52,8 +52,7 @@ uv run post_scheduler.py # Scheduler for cron
 **Database:** TinyDB (NoSQL JSON) in `tweets.json`
 
 **Tweet structure:**
-- text: Tweet content
-- hashtags: Comma-separated (auto-formatted with #)
+- text: Tweet content (max 280 chars)
 - status: pending/posted
 - posted_at: Timestamp when posted
 - created_at: When added to queue
@@ -65,7 +64,7 @@ uv run post_scheduler.py # Scheduler for cron
 4. If match, posts next pending tweet
 5. Tweet marked as posted with timestamp
 
-**Character limit:** 280 chars (text + hashtags validated)
+**Character limit:** 280 chars validated on add/edit
 
 ## X Automation Flow
 
@@ -77,13 +76,36 @@ uv run post_scheduler.py # Scheduler for cron
 6. Click post button at (928, 192)
 7. Wait 15 seconds for posting to complete
 
-## Cron Setup
+## Scheduler Setup (macOS)
+
+Uses launchd instead of cron:
 
 ```bash
-# Run every minute, posts only at scheduled times
-* * * * * cd /path/to/project && uv run post_scheduler.py >> logs/scheduler.log 2>&1
+# Setup (one-time)
+./setup_scheduler.sh
+
+# Manage
+launchctl list | grep xtweet              # Check status
+launchctl unload ~/Library/LaunchAgents/com.xtweet.scheduler.plist  # Stop
+launchctl load ~/Library/LaunchAgents/com.xtweet.scheduler.plist    # Start
+tail -f logs/scheduler.log                # View logs
 ```
 
-## Database Viewing
+Configuration file: `com.xtweet.scheduler.plist`
+- Runs every 60 seconds
+- Posts only at times defined in `lib/schedule_config.py`
+- Logs to `logs/scheduler.log` and `logs/scheduler_error.log`
 
-View `tweets.json` with any JSON viewer or use `manage_tweets.py` CLI.
+## Database
+
+TinyDB stores tweets in `tweets.json` (excluded from git). View/edit with any JSON viewer or use the CLI tool.
+
+Tweet structure:
+```json
+{
+  "text": "Tweet content with #hashtags included in text",
+  "status": "pending",
+  "posted_at": null,
+  "created_at": "2026-01-19T12:00:00"
+}
+```

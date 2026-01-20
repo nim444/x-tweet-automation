@@ -7,10 +7,9 @@ def add_tweet(db: TweetDB):
     """Add a new tweet to queue."""
     print("\n=== Add Tweet to Queue ===")
     text = input("Tweet text: ").strip()
-    hashtags = input("Hashtags (comma-separated, no #): ").strip()
 
     try:
-        tweet_id = db.add_tweet(text, hashtags)
+        tweet_id = db.add_tweet(text)
         tweet = db.get_tweet(tweet_id)
         full_text = db.get_full_text(tweet)
         print(f"\nAdded to queue - ID: {tweet_id}")
@@ -53,17 +52,15 @@ def edit_tweet(db: TweetDB):
         return
 
     print(f"\nCurrent: {db.get_full_text(tweet)}")
-    print(f"Hashtags: {tweet['hashtags'] or 'None'}")
 
-    text = input("\nNew text (Enter to keep): ").strip()
-    hashtags = input("New hashtags (Enter to keep): ").strip()
+    text = input("\nNew text: ").strip()
+
+    if not text:
+        print("No changes made")
+        return
 
     try:
-        db.update_tweet(
-            tweet_id,
-            text=text if text else None,
-            hashtags=hashtags if hashtags else None
-        )
+        db.update_tweet(tweet_id, text)
         updated = db.get_tweet(tweet_id)
         full_text = db.get_full_text(updated)
         print(f"\nUpdated ({len(full_text)}/280)")
